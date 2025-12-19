@@ -9,9 +9,9 @@
   <body>
     <p>Библиотека группы "The Mandela Catalogue"</p>
     <p>Группа: P3121</p>
-    <ul id="navigation">
+    <ul class="nav">
     {% for item in navigation %}
-        <li><a href="{{ item.href }}">{{ item.caption }}</a></li>
+        <li><a class="nav-link" href="{{ item.href }}">{{ item.caption }}</a></li>
     {% endfor %}
     </ul>
 
