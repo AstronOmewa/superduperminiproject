@@ -4,3 +4,9 @@
 # Установка зависимостей
 
 ```pip install -r requirements.txt```
+
+# Задачи
+
+- 
+- 
+- 
