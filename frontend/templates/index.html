@@ -1,24 +1,49 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{library}}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  </head>
-  <body>
-    <p>Библиотека группы "The Mandela Catalogue"</p>
-    <p>Группа: P3121</p>
-    <ul class="nav">
-    {% for item in navigation %}
-        <li><a class="nav-link" href="{{ item.href }}">{{ item.caption }}</a></li>
-    {% endfor %}
-    </ul>
+<!-- templates/index.html -->
+{% extends "base.html" %}
 
-    <h1>{{library}}</h1>
+{% block title %}Главная страница{% endblock %}
 
-    {{ a_variable }}
+{% block content %}
+<div class="container mt-5 text-center">
+    <div class="jumbotron bg-light p-5 rounded-3 shadow">
+        <h1 class="display-4 mb-4">📚 Добро пожаловать в Каталог книг!</h1>
+        <p class="lead mb-4">Управляйте своей личной библиотекой, отслеживайте прочитанные книги и делитесь своими коллекциями.</p>
+        <hr class="my-4">
+        <p class="mb-4">Группа P3121 "The Mandela Catalogue"</p>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-  </body>
-</html>
+        <div class="row mt-5">
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 border-primary">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="bi bi-people-fill text-primary" style="font-size: 3rem;"></i>
+                        </div>
+                        <h3 class="card-title">Пользователи каталога</h3>
+                        <p class="card-text">Просмотр всех пользователей и количества книг в их каталогах</p>
+                        <a href="/users" class="btn btn-primary btn-lg">
+                            <i class="bi bi-arrow-right"></i> Перейти к пользователям
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 border-success">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="bi bi-book-fill text-success" style="font-size: 3rem;"></i>
+                        </div>
+                        <h3 class="card-title">Каталог книг</h3>
+                        <p class="card-text">Просмотр, добавление и редактирование книг с отметкой статуса чтения</p>
+                        <a href="/books" class="btn btn-success btn-lg">
+                            <i class="bi bi-arrow-right"></i> Перейти к книгам
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+{% endblock %}

@@ -1,0 +1,146 @@
+<!-- templates/books/view.html -->
+{% extends "base.html" %}
+
+{% block title %}{{ book.title }}{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/">Главная</a></li>
+        <li class="breadcrumb-item"><a href="/books">Все книги</a></li>
+        <li class="breadcrumb-item active">{{ book.title }}</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div>
+                        <h1 class="card-title">{{ book.title }}</h1>
+                        <h3 class="card-subtitle text-muted">{{ book.author }}</h3>
+                    </div>
+
+                    <span class="badge
+                        {% if book.status == 'finished' %}bg-success
+                        {% elif book.status == 'reading' %}bg-warning
+                        {% else %}bg-secondary{% endif %} fs-6">
+                        {% if book.status == 'finished' %}Прочитано
+                        {% elif book.status == 'reading' %}Читаю
+                        {% else %}Не начата{% endif %}
+                    </span>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <p><strong><i class="bi bi-calendar"></i> Год издания:</strong> {{ book.year }}</p>
+                        <p><strong><i class="bi bi-tag"></i> Жанр:</strong> {{ book.genre }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong><i class="bi bi-person"></i> Владелец:</strong>
+                            <a href="/users/{{ book.user.id }}">{{ book.user.name }}</a>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h5><i class="bi bi-card-text"></i> Описание</h5>
+                    <div class="card">
+                        <div class="card-body">
+                            {{ book.description|default("Описание отсутствует", true) }}
+                        </div>
+                    </div>
+                </div>
+
+                {% if current_user.id == book.user_id %}
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0"><i class="bi bi-gear"></i> Управление книгой</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="/books/{{ book.id }}/status" class="mb-3">
+                            <div class="row align-items-center">
+                                <div class="col-md-4">
+                                    <label class="form-label">Статус чтения:</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <select name="status" class="form-select">
+                                        <option value="not_started" {% if book.status == 'not_started' %}selected{% endif %}>
+                                            Не начата
+                                        </option>
+                                        <option value="reading" {% if book.status == 'reading' %}selected{% endif %}>
+                                            Читаю
+                                        </option>
+                                        <option value="finished" {% if book.status == 'finished' %}selected{% endif %}>
+                                            Прочитано
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn btn-primary">Обновить</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="btn-group">
+                            <a href="/books/{{ book.id }}/edit" class="btn btn-warning">
+                                <i class="bi bi-pencil"></i> Редактировать
+                            </a>
+                            <a href="/books/{{ book.id }}/delete" class="btn btn-danger"
+                               onclick="return confirm('Удалить книгу «{{ book.title }}»?')">
+                                <i class="bi bi-trash"></i> Удалить
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <i class="bi bi-info-circle"></i> Информация о книге
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-3">
+                    <i class="bi bi-book" style="font-size: 4rem; color: #6c757d;"></i>
+                </div>
+
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>ID книги:</span>
+                        <span class="fw-bold">#{{ book.id }}</span>
+                    </li>
+                    {% if book.isbn %}
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>ISBN:</span>
+                        <span class="font-monospace">{{ book.isbn }}</span>
+                    </li>
+                    {% endif %}
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Дата добавления:</span>
+                        <span>{{ book.created_at.strftime('%d.%m.%Y') if book.created_at else 'Не указана' }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Кнопка для быстрого возврата -->
+        <div class="card">
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="/books" class="btn btn-outline-primary">
+                        <i class="bi bi-arrow-left"></i> Назад к списку книг
+                    </a>
+                    <a href="/users/{{ book.user.id }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-person"></i> К профилю владельца
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
