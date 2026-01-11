@@ -1,10 +1,89 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<!-- templates/books/edit.html -->
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block title %}Редактировать книгу{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-warning text-white">
+                <h4 class="mb-0">
+                    <i class="bi bi-pencil-square"></i> Редактировать книгу
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="/books/{{ book.id }}/edit">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="title" class="form-label">Название книги *</label>
+                            <input type="text" class="form-control" id="title" name="title"
+                                   value="{{ book.title }}" required>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="author" class="form-label">Автор *</label>
+                            <input type="text" class="form-control" id="author" name="author"
+                                   value="{{ book.author }}" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="year" class="form-label">Год издания</label>
+                            <input type="number" class="form-control" id="year" name="year"
+                                   value="{{ book.year }}" min="1000" max="{% now 'Y' %}">
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="genre" class="form-label">Жанр</label>
+                            <select class="form-select" id="genre" name="genre">
+                                <option value="">Выберите жанр</option>
+                                <option value="Роман" {% if book.genre == 'Роман' %}selected{% endif %}>Роман</option>
+                                <option value="Фантастика" {% if book.genre == 'Фантастика' %}selected{% endif %}>Фантастика</option>
+                                <option value="Фэнтези" {% if book.genre == 'Фэнтези' %}selected{% endif %}>Фэнтези</option>
+                                <option value="Детектив" {% if book.genre == 'Детектив' %}selected{% endif %}>Детектив</option>
+                                <option value="Научная литература" {% if book.genre == 'Научная литература' %}selected{% endif %}>Научная литература</option>
+                                <option value="Биография" {% if book.genre == 'Биография' %}selected{% endif %}>Биография</option>
+                                <option value="Поэзия" {% if book.genre == 'Поэзия' %}selected{% endif %}>Поэзия</option>
+                                <option value="Драма" {% if book.genre == 'Драма' %}selected{% endif %}>Драма</option>
+                                <option value="Комедия" {% if book.genre == 'Комедия' %}selected{% endif %}>Комедия</option>
+                                <option value="Другое" {% if book.genre == 'Другое' %}selected{% endif %}>Другое</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                            <label for="status" class="form-label">Статус чтения</label>
+                            <select class="form-select" id="status" name="status" required>
+                                <option value="not_started" {% if book.status == 'not_started' %}selected{% endif %}>
+                                    Не начата
+                                </option>
+                                <option value="reading" {% if book.status == 'reading' %}selected{% endif %}>
+                                    Читаю
+                                </option>
+                                <option value="finished" {% if book.status == 'finished' %}selected{% endif %}>
+                                    Прочитано
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Краткое описание</label>
+                        <textarea class="form-control" id="description" name="description" rows="4">{{ book.description }}</textarea>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="/books/{{ book.id }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Отмена
+                        </a>
+                        <button type="submit" class="btn btn-warning">
+                            <i class="bi bi-check-circle"></i> Сохранить изменения
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,10 +1,71 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<!-- templates/general_users_list.html -->
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block title %}Пользователи каталога{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="bi bi-people-fill"></i> Список пользователей</h1>
+        <a href="/users/add" class="btn btn-primary">
+            <i class="bi bi-person-plus"></i> Добавить пользователя
+        </a>
+    </div>
+
+    {% if users %}
+    <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Имя пользователя</th>
+                    <th>Количество книг</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>
+                        <a href="/users/{{ user.id }}" class="text-decoration-none fw-bold">
+                            {{ user.name }}
+                        </a>
+                    </td>
+                    <td>
+                        <span class="badge bg-primary rounded-pill">{{ user.books_count }}</span>
+                    </td>
+                    <td>
+                        <div class="btn-group btn-group-sm" role="group">
+                            <a href="/users/{{ user.id }}/books" class="btn btn-outline-primary" title="Книги пользователя">
+                                <i class="bi bi-book"></i> Книги
+                            </a>
+                            <a href="/users/{{ user.id }}/edit" class="btn btn-outline-warning" title="Редактировать">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="/users/{{ user.id }}/delete"
+                               class="btn btn-outline-danger"
+                               title="Удалить"
+                               onclick="return confirm('Удалить пользователя {{ user.name }}?')">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center py-4">
+        <i class="bi bi-people display-6 d-block mb-3"></i>
+        <h4>Пользователи не найдены</h4>
+        <p class="mb-0">Добавьте первого пользователя в каталог</p>
+        <a href="/users/add" class="btn btn-primary mt-3">Добавить пользователя</a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Подключаем Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+{% endblock %}
