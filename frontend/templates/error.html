@@ -1,0 +1,29 @@
+<!-- templates/error.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Ошибка {{ code }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background: #f5f5f5;
+        }
+        .error {
+            margin-top: 100px;
+        }
+        .code {
+            font-size: 80px;
+            color: #dc3545;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="error">
+        <div class="code">Ошибка {{ code }}</div>
+    </div>
+</body>
+</html>
