@@ -1,0 +1,115 @@
+<!-- templates/users/user_profile.html -->
+{% extends "base.html" %}
+
+{% block title %}Профиль: {{ user.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Информация о пользователе -->
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <i class="bi bi-person-circle" style="font-size: 4rem; color: #6c757d;"></i>
+                    </div>
+                    <h3>{{ user.name }}</h3>
+                    <p class="text-muted">Пользователь #{{ user.id }}</p>
+
+                    <div class="mt-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Всего книг:</span>
+                            <span class="badge bg-primary">{{ user.books_count }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Прочитано:</span>
+                            <span class="badge bg-success">{{ user.finished_count|default(0) }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span>Читает сейчас:</span>
+                            <span class="badge bg-warning">{{ user.reading_count|default(0) }}</span>
+                        </div>
+                    </div>
+
+                    <hr class="my-3">
+
+                    <div class="d-grid gap-2">
+                        <a href="/users/{{ user.id }}/edit" class="btn btn-warning">
+                            <i class="bi bi-pencil"></i> Редактировать профиль
+                        </a>
+                        <a href="/books/add?user_id={{ user.id }}" class="btn btn-primary">
+                            <i class="bi bi-plus-circle"></i> Добавить книгу
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Книги пользователя -->
+        <div class="col-md-8">
+            <h2 class="mb-4"><i class="bi bi-journal-bookmark"></i> Каталог книг пользователя</h2>
+
+            {% if books %}
+            <div class="row">
+                {% for book in books %}
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100 book-card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ book.title }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ book.author }}</h6>
+
+                            <p class="card-text small">
+                                {{ book.description[:100] }}{% if book.description|length > 100 %}...{% endif %}
+                            </p>
+
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <span class="badge
+                                    {% if book.status == 'finished' %}bg-success
+                                    {% elif book.status == 'reading' %}bg-warning
+                                    {% else %}bg-secondary{% endif %}">
+                                    {% if book.status == 'finished' %}Прочитано
+                                    {% elif book.status == 'reading' %}Читаю
+                                    {% else %}Не начата{% endif %}
+                                </span>
+
+                                <div class="btn-group btn-group-sm">
+                                    <a href="/books/{{ book.id }}" class="btn btn-outline-primary">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href="/books/{{ book.id }}/edit" class="btn btn-outline-warning">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <small class="text-muted">
+                                {{ book.year }} • {{ book.genre }}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle"></i> В каталоге пока нет книг.
+                <a href="/books/add?user_id={{ user.id }}" class="alert-link">Добавить первую книгу</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+<style>
+    .book-card {
+        transition: transform 0.2s;
+        border: 1px solid #dee2e6;
+    }
+    .book-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+</style>
+{% endblock %}
