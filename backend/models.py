@@ -9,12 +9,14 @@ class User(db.Model):
     Атрибуты:
         id (int): первичный ключ
         username (str): уникальное имя пользователя
+        password_hash (str): хеш пароля
         books (list[Book]): список книг пользователя
     """
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), nullable=False, unique=True)
+    password_hash = db.Column(db.String(255), nullable=False)
 
     books = db.relationship(
         "Book",                    # Имя связанной модели

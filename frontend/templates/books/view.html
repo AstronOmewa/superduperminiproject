@@ -39,7 +39,7 @@
                     </div>
                     <div class="col-md-6">
                         <p><strong><i class="bi bi-person"></i> Владелец:</strong>
-                            <a href="/users/{{ book.user.id }}">{{ book.user.name }}</a>
+                            <a href="/users/{{ book.user.id }}">{{ book.user.username }}</a>
                         </p>
                     </div>
                 </div>
@@ -114,15 +114,9 @@
                         <span>ID книги:</span>
                         <span class="fw-bold">#{{ book.id }}</span>
                     </li>
-                    {% if book.isbn %}
                     <li class="list-group-item d-flex justify-content-between">
-                        <span>ISBN:</span>
-                        <span class="font-monospace">{{ book.isbn }}</span>
-                    </li>
-                    {% endif %}
-                    <li class="list-group-item d-flex justify-content-between">
-                        <span>Дата добавления:</span>
-                        <span>{{ book.created_at.strftime('%d.%m.%Y') if book.created_at else 'Не указана' }}</span>
+                        <span>Год издания:</span>
+                        <span>{{ book.year if book.year else 'Не указан' }}</span>
                     </li>
                 </ul>
             </div>
