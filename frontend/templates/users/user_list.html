@@ -29,11 +29,11 @@
                     <td>{{ user.id }}</td>
                     <td>
                         <a href="/users/{{ user.id }}" class="text-decoration-none fw-bold">
-                            {{ user.name }}
+                            {{ user.username }}
                         </a>
                     </td>
                     <td>
-                        <span class="badge bg-primary rounded-pill">{{ user.books_count }}</span>
+                        <span class="badge bg-primary rounded-pill">{{ user.books|length }}</span>
                     </td>
                     <td>
                         <div class="btn-group btn-group-sm" role="group">
@@ -46,7 +46,7 @@
                             <a href="/users/{{ user.id }}/delete"
                                class="btn btn-outline-danger"
                                title="Удалить"
-                               onclick="return confirm('Удалить пользователя {{ user.name }}?')">
+                               onclick="return confirm('Удалить пользователя {{ user.username }}?')">
                                 <i class="bi bi-trash"></i>
                             </a>
                         </div>
